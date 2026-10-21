@@ -9,6 +9,7 @@
 #include "JoystickUdev.h"
 #include "api/JoystickTypes.h"
 #include "log/Log.h"
+#include "utils/linux/PowerSupply.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -190,6 +191,15 @@ void CJoystickUdev::UpdateMotorState(const std::array<uint16_t, MOTOR_COUNT>& mo
   {
     m_effect = e.id;
   }
+}
+
+bool CJoystickUdev::GetBattery(JOYSTICK_BATTERY& battery)
+{
+  const char* syspath = udev_device_get_syspath(m_dev);
+  if (syspath == nullptr)
+    return false;
+
+  return CPowerSupply::GetBattery(syspath, battery);
 }
 
 bool CJoystickUdev::ScanEvents(void)
