@@ -69,6 +69,7 @@ bool CJoystickXInput::GetBattery(JOYSTICK_BATTERY& battery)
   switch (info.BatteryType)
   {
     case BATTERY_TYPE_DISCONNECTED:
+    case BATTERY_TYPE_UNKNOWN:
       return false;
 
     case BATTERY_TYPE_WIRED:

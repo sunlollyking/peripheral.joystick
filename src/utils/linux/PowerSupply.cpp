@@ -107,7 +107,7 @@ bool CPowerSupply::ReadBattery(const std::string& powerSupplyPath, JOYSTICK_BATT
   const std::string status = ReadAttribute(powerSupplyPath + "/status");
   if (status == "Charging")
     battery.state = JOYSTICK_BATTERY_STATE_CHARGING;
-  else if (status == "Full" || status == "Not charging")
+  else if (status == "Full" || (status == "Not charging" && level >= 100))
     battery.state = JOYSTICK_BATTERY_STATE_FULL;
   else
     battery.state = JOYSTICK_BATTERY_STATE_DISCHARGING;
