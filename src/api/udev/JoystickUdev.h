@@ -85,6 +85,7 @@ namespace JOYSTICK
     // Udev properties
     udev_device* m_dev;
     std::string  m_path;
+    std::string  m_syspath;
     dev_t        m_deviceNumber;
     int          m_fd;
     bool         m_bInitialized;

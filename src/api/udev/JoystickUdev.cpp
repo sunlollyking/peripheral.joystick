@@ -47,6 +47,10 @@ CJoystickUdev::CJoystickUdev(udev_device* dev, const char* path)
    m_motors(),
    m_previousMotors()
 {
+  // The device is released once the joystick is constructed
+  if (const char* syspath = udev_device_get_syspath(dev))
+    m_syspath = syspath;
+
   // Must initialize in the constructor to fill out joystick properties
   Initialize();
 }
@@ -195,11 +199,10 @@ void CJoystickUdev::UpdateMotorState(const std::array<uint16_t, MOTOR_COUNT>& mo
 
 bool CJoystickUdev::GetBattery(JOYSTICK_BATTERY& battery)
 {
-  const char* syspath = udev_device_get_syspath(m_dev);
-  if (syspath == nullptr)
+  if (m_syspath.empty())
     return false;
 
-  return CPowerSupply::GetBattery(syspath, battery);
+  return CPowerSupply::GetBattery(m_syspath, battery);
 }
 
 bool CJoystickUdev::ScanEvents(void)
